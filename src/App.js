@@ -1,10 +1,10 @@
 import './App.css';
-import ItemLists from './Components/ItemLists';
 import { useEffect, useState } from 'react';
 import NavBar from './Components/NavBar';
 import ShowDetails from './Components/ShowDetails';
 import NotFound from './Components/NotFound';
 import { useNavigate, Route, Routes} from 'react-router-dom';
+import ViewController from './Components/ViewController';
 const API_URL='https://dummyjson.com/users'
 
 function App() {
@@ -13,6 +13,8 @@ function App() {
   const [searchItems,setSearchItems] = useState([]);
   const navigate = useNavigate();
   const [selectedItem,setSelectedItem]=useState('');
+  const [columnView,setColumnView]=useState(true);
+  const [listView,setListView] = useState(false)
 
   useEffect(()=>{
     const fetchItem = async() =>{
@@ -64,7 +66,7 @@ function App() {
         
       <NavBar handleSearch={handleSearch} handleNavHome={handleNavHome} />  
         <Routes>
-          <Route path='/' element={ <ItemLists items={items } handleShowDetails={handleShowDetails}  />}/>
+          <Route path='/' element={ <ViewController items={items } handleShowDetails={handleShowDetails}  />}/>
           <Route path='/details/:id'element={<ShowDetails selectedItem={selectedItem}/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
