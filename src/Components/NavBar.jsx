@@ -3,7 +3,12 @@ import Container from "react-bootstrap/Container";
 import NavButton from "./NavButton";
 import { Nav, Navbar } from "react-bootstrap";
 
-export default function NavBar({ handleSearch, handleNavHome }) {
+export default function NavBar({
+  handleSearch,
+  handleNavHome,
+  changeToList,
+  changeToColumn,
+}) {
   return (
     <div>
       <Navbar data-bs-theme="light" className="bg-secondary">
@@ -29,10 +34,14 @@ export default function NavBar({ handleSearch, handleNavHome }) {
           </Nav>
           <Nav>
             <Nav.Link>
-              <NavButton value={"colview"} />
+              <button value={"colview"} onClick={() => changeToList()}>
+                List View
+              </button>
             </Nav.Link>
             <Nav.Link>
-              <NavButton value={"listview"} />
+              <button value={"listview"} onClick={() => changeToColumn()}>
+                Column View
+              </button>
             </Nav.Link>
           </Nav>
         </Container>

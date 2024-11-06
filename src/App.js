@@ -5,6 +5,8 @@ import ShowDetails from './Components/ShowDetails';
 import NotFound from './Components/NotFound';
 import { useNavigate, Route, Routes} from 'react-router-dom';
 import ViewController from './Components/ViewController';
+import ItemColumn from './Components/ItemColumn';
+import ItemList from './Components/ItemList';
 const API_URL='https://dummyjson.com/users'
 
 function App() {
@@ -25,13 +27,14 @@ function App() {
 
         const listItem= await response.json()
 
-       //  console.log(listItem)
+       // console.log(listItem)
         setItems(listItem)
         setSearchItems(listItem)
       }
       catch(err)
       {
         
+      }finally{            
       }
     }
     setTimeout(()=>fetchItem())
@@ -59,14 +62,28 @@ function App() {
     navigate('/')
   }
 
+  const changeToColumn = () =>{
+    setColumnView(true);
+    setListView(false);
+    console.log("columnView")
+  }
+
+  const changeToList = () =>{
+    setColumnView(false)
+    setListView(true)
+    console.log("listView")
+  }
 
   return (
     <div className="App" style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
       <div style={{ width: '1400px' }}>
         
-      <NavBar handleSearch={handleSearch} handleNavHome={handleNavHome} />  
+      <NavBar handleSearch={handleSearch} handleNavHome={handleNavHome}  changeToList={changeToList} changeToColumn={changeToColumn} />  
         <Routes>
-          <Route path='/' element={ <ViewController items={items } handleShowDetails={handleShowDetails}  />}/>
+          <Route path='/' element={ <>
+                 {columnView&&<ItemColumn items={items } handleShowDetails={handleShowDetails} /> }
+                 {listView&&<ItemList items={items } handleShowDetails={handleShowDetails} />}
+          </>}/>
           <Route path='/details/:id'element={<ShowDetails selectedItem={selectedItem}/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>

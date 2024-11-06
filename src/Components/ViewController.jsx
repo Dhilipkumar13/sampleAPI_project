@@ -1,10 +1,10 @@
 import React from "react";
-import ItemLists from "./ItemLists";
+import ItemColumn from "./ItemColumn";
 
 export default function ViewController(items, handleShowDetails) {
   return (
-    <React.StrictMode>
-      <ItemLists items={items} handleShowDetails={handleShowDetails} />
-    </React.StrictMode>
+    <div>
+      <ItemColumn items={items} handleShowDetails={handleShowDetails} />
+    </div>
   );
 }

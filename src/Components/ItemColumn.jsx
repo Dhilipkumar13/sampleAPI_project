@@ -1,10 +1,11 @@
 import React from "react";
+import ListGroup from "react-bootstrap/ListGroup";
 import ItemBox from "./ItemBox";
 
-export default function ItemLists({ items, handleShowDetails }) {
-  // Check if items.users exists and is an array
+export default function ItemColumn({ items, handleShowDetails }) {
+  console.log(items);
   if (!items.users || !Array.isArray(items.users) || items.users.length === 0) {
-    return <div>Loading...</div>; // Display this when no items match the search
+    return <h2>Empty...</h2>;
   }
 
   return (
@@ -16,9 +17,10 @@ export default function ItemLists({ items, handleShowDetails }) {
       }}
     >
       {items.users.map((item, index) => (
-        <button
+        <ListGroup
           style={{
             margin: "10px",
+            cursor: "pointer",
           }}
           onClick={(e) => {
             e.preventDefault();
@@ -26,7 +28,7 @@ export default function ItemLists({ items, handleShowDetails }) {
           }}
         >
           <ItemBox key={index} item={item} />
-        </button>
+        </ListGroup>
       ))}
     </div>
   );
