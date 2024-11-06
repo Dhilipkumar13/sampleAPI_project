@@ -31,8 +31,6 @@ function App() {
       {
         
       }
-      finally{            
-      }
     }
     setTimeout(()=>fetchItem())
   },[])
