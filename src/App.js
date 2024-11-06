@@ -1,62 +1,78 @@
-  import './App.css';
-  import ItemLists from './Components/ItemLists';
-  import { useEffect, useState } from 'react';
-  import NavBar from './Components/NavBar';
-  const API_URL='https://dummyjson.com/users'
+import './App.css';
+import ItemLists from './Components/ItemLists';
+import { useEffect, useState } from 'react';
+import NavBar from './Components/NavBar';
+import ShowDetails from './Components/ShowDetails';
+import NotFound from './Components/NotFound';
+import { useNavigate, Route, Routes} from 'react-router-dom';
+const API_URL='https://dummyjson.com/users'
 
-  function App() {
+function App() {
 
-    const [items,setItems] = useState([]);
-    const [searchItems,setSearchItems] = useState([]);
+  const [items,setItems] = useState([]);
+  const [searchItems,setSearchItems] = useState([]);
+  const navigate = useNavigate();
+  const [selectedItem,setSelectedItem]=useState('');
 
-    useEffect(()=>{
-      const fetchItem = async() =>{
-        try{
-          const response = await fetch(API_URL)
+  useEffect(()=>{
+    const fetchItem = async() =>{
+      try{
+        const response = await fetch(API_URL)
 
-          if(!response.ok) throw Error("Data not Recived")
+        if(!response.ok) throw Error("Data not Recived")
 
-          const listItem= await response.json()
+        const listItem= await response.json()
 
-          setItems(listItem)
-          setSearchItems(listItem)
-        }
-        catch(err)
-        {
-
-        }
-        finally{
-          
-        }
+       //  console.log(listItem)
+        setItems(listItem)
+        setSearchItems(listItem)
       }
-      setTimeout(()=>fetchItem(),2000)
-    },[])
-
-    const handleSearch = (e) => {
-
-      console.log("serach")
-
-      const query=e.target.value.toLowerCase()
-
-      // console.log(items.users)
-      // console.log("dsfsg")
-      const filteredItem = items.users.filter((item) => {
-        item.firstName.toLowerCase.includes(query)||
-        item.lastName.toLowerCase.includes(query)||
-        item.maidenName.toLowerCase.includes(query)||
-        item.email.toLowerCase.includes(query)
-      })
-
-     setSearchItems(filteredItem);
+      catch(err)
+      {
+        
+      }
+      finally{            
+      }
     }
-    return (
-      <div className="App" style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
-        <div style={{ width: '1400px' }}>
-          <NavBar handleSearch={handleSearch}/>  
-          <ItemLists  items={searchItems }/>
-        </div>
-      </div>
-    );
+    setTimeout(()=>fetchItem())
+  },[])
+
+  const handleShowDetails = (detail) => {  
+    // console.log(detail) 
+    setSelectedItem(detail);
+    // console.log(selectedItem)
+    navigate(`/details/${detail.id}`)
   }
 
-  export default App;
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase(); // Convert query to lowercase for case-insensitive matching
+    
+    const filteredItems = items.users.filter((item) =>
+      item.firstName.toLowerCase().includes(query) // Check if query is a substring
+    );
+    
+    setSearchItems(query === '' ? items.users : filteredItems);
+  };
+
+  const handleNavHome = () => {
+    navigate('/')
+  }
+
+
+  return (
+    <div className="App" style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
+      <div style={{ width: '1400px' }}>
+        
+      <NavBar handleSearch={handleSearch} handleNavHome={handleNavHome} />  
+        <Routes>
+          <Route path='/' element={ <ItemLists items={items } handleShowDetails={handleShowDetails}  />}/>
+          <Route path='/details/:id'element={<ShowDetails selectedItem={selectedItem}/>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+export default App;

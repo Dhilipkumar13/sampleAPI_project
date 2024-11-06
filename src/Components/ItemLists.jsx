@@ -1,20 +1,32 @@
 import React from "react";
 import ItemBox from "./ItemBox";
 
-export default function ItemLists({ items }) {
-  console.log(items.users);
-
-  // Check if items array is empty
-  if (!items || items.length === 0) {
-    return <p>Loading...</p>; // You can display a loading message or spinner here
+export default function ItemLists({ items, handleShowDetails }) {
+  // Check if items.users exists and is an array
+  if (!items.users || !Array.isArray(items.users) || items.users.length === 0) {
+    return <div>Loading...</div>; // Display this when no items match the search
   }
 
   return (
     <div
-      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+      }}
     >
       {items.users.map((item, index) => (
-        <ItemBox item={item} key={index} />
+        <button
+          style={{
+            margin: "10px",
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            handleShowDetails(item);
+          }}
+        >
+          <ItemBox key={index} item={item} />
+        </button>
       ))}
     </div>
   );

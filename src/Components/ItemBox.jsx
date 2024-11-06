@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function ItemBox({ item }) {
+  // console.log(item + "****?*");
   return (
     <div
       className="bg-primary"
@@ -14,7 +15,7 @@ export default function ItemBox({ item }) {
       }}
     >
       <h3>
-        {item.firstName} {item.lastName}
+        {item.id}.{item.firstName} {item.lastName}
       </h3>
       <p>Email: {item.email}</p>
       <p>Age: {item.age}</p>
